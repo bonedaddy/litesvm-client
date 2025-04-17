@@ -1,8 +1,6 @@
 pub mod traits;
 pub mod errors;
 
-#[cfg(test)]
-pub mod test;
 
 use {
     errors::SVMClientError, litesvm::LiteSVM, traits::{AccountsLoader, ProgramsLoader}
@@ -28,7 +26,7 @@ impl SVMClient {
         }
     }
     /// Sets one or more accounts in the [`LiteSVM`] runtime
-    pub fn load_accounts(&mut self, accounts_loader: &mut dyn AccountsLoader) -> Result<(), SVMClientError> {
+    pub fn load_accounts(&mut self, accounts_loader: impl AccountsLoader) -> Result<(), SVMClientError> {
         for account in accounts_loader.accounts() {
             self.svm.set_account(
                 account.pubkey(),
@@ -38,7 +36,7 @@ impl SVMClient {
         Ok(())
     }
     /// Adds one or more programs in the [`LiteSVM`] runtime
-    pub fn load_programs(&mut self, programs_loader: &mut dyn ProgramsLoader) {
+    pub fn load_programs(&mut self, programs_loader: impl ProgramsLoader) {
         for program in programs_loader.programs() {
             self.svm.add_program(
                 program.pubkey(),

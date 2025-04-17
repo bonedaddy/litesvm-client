@@ -11,7 +11,7 @@ pub trait AccountLoader {
 /// Trait used to load multiple accounts
 pub trait AccountsLoader {
     /// Returns multiple [`AccountLoader`]
-    fn accounts(&self) -> Vec<&mut dyn AccountLoader>;
+    fn accounts(&self) -> Vec<&dyn AccountLoader>;
 }
 
 /// Trait used to load a single program
@@ -25,5 +25,5 @@ pub trait ProgramLoader {
 /// Trait used to load multiple programs
 pub trait ProgramsLoader {
     /// Returns multiple [`ProgramLoader`]
-    fn programs(&self) -> Vec<&mut dyn ProgramLoader>;
+    fn programs(&self) -> Vec<&dyn ProgramLoader>;
 }
