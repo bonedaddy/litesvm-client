@@ -1,11 +1,15 @@
+//! `litesvm-client is a helper library for working with the litesvm crate.
+
 pub mod traits;
 pub mod errors;
 
 
 use {
-    errors::SVMClientError, litesvm::LiteSVM, traits::{AccountsLoader, ProgramsLoader}
+    errors::SVMClientError, litesvm::LiteSVM, solana_sdk::sysvar::clock::Clock, traits::{AccountsLoader, ProgramsLoader}
 };
 
+
+/// SVMClient wraps [`LiteSVM`] and provides helper functions for common use cases
 pub struct SVMClient {
     svm: LiteSVM
 }
@@ -43,6 +47,29 @@ impl SVMClient {
                 program.data()
             );
         }
+    }
+    /// Advances the timestamp reported by the [`Clock`] sysvar
+    /// 
+    /// This does not update any other values in the [`Clock`] sysvar, and instead
+    /// copies whatever the values currently reported are
+    pub fn advance_time(&mut self, unix_timestamp: i64) {
+        let clock: Clock = self.svm.get_sysvar();
+        self.svm.set_sysvar(&Clock {
+            unix_timestamp,
+            slot: clock.slot,
+            epoch_start_timestamp: clock.epoch_start_timestamp,
+            epoch: clock.epoch,
+            leader_schedule_epoch: clock.leader_schedule_epoch
+        });
+    }
+    /// Advances the slot by `slots_to_advance`
+    /// 
+    /// # Arguments
+    /// * `slots_to_advance` - number of slots to advance by
+    pub fn next_slot(&mut self, slots_to_advance: u64) {
+        self.svm.warp_to_slot(
+            self.svm.get_sysvar::<Clock>().slot + slots_to_advance
+        );
     }
 }
 
