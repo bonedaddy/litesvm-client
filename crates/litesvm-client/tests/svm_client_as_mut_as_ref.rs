@@ -1,19 +1,18 @@
-use litesvm::LiteSVM;
-use solana_sdk::{account::Account, pubkey::Pubkey};
-
-use litesvm_client::SVMClient;
+use {
+    litesvm::LiteSVM,
+    litesvm_client::SVMClient,
+    solana_sdk::{account::Account, pubkey::Pubkey},
+};
 
 #[test]
 fn test_svm_client_as_mut_as_ref() {
     let mut svm_client = SVMClient::new();
-
 
     let account_key = Pubkey::new_unique();
     let owner_key = Pubkey::new_unique();
 
     {
         let svm: &mut LiteSVM = svm_client.as_mut();
-
 
         svm.set_account(
             account_key,
@@ -22,9 +21,10 @@ fn test_svm_client_as_mut_as_ref() {
                 data: b"foobar".to_vec(),
                 owner: owner_key,
                 executable: false,
-                rent_epoch: 1337
-            }
-        ).unwrap();
+                rent_epoch: 1337,
+            },
+        )
+        .unwrap();
     }
 
     {

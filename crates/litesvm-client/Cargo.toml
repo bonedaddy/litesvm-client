@@ -6,6 +6,10 @@ license.workspace = true
 repository.workspace = true
 rust-version.workspace = true
 
+[features]
+default = ["rpc-loader"]
+rpc-loader = ["solana-client", "solana-account-decoder-client-types"]
+
 [dependencies.litesvm]
 version = "0.6.1"
 
@@ -15,8 +19,16 @@ version = "2.1.16"
 [dependencies.thiserror]
 version = "1"
 
-[dev-dependencies.tokio]
+[dependencies.solana-client]
+version = "2.1.16"
+optional = true
+
+[dependencies.solana-account-decoder-client-types]
+version = "2.1.16"
+optional = true
+
+[dependencies.anyhow]
 version = "1"
 
-[dev-dependencies.solana-client]
-version = "2.1.16"
+[dev-dependencies.tokio]
+version = "1"
