@@ -19,7 +19,7 @@ pub trait ProgramLoader {
     /// Returns the program address of a program to load
     fn pubkey(&self) -> Pubkey;
     /// Returns the program data
-    fn data(&self) -> &[u8];
+    fn data(&self) -> Vec<u8>;
 }
 
 /// Trait used to load multiple programs
