@@ -14,6 +14,7 @@ use {
 };
 
 /// SVMClient wraps [`LiteSVM`] and provides helper functions for common use cases
+#[derive(Clone)]
 pub struct SVMClient {
     svm: LiteSVM,
 }
