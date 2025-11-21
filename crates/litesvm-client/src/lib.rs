@@ -43,10 +43,14 @@ impl SVMClient {
         Ok(())
     }
     /// Adds one or more programs in the [`LiteSVM`] runtime
-    pub fn load_programs(&mut self, programs_loader: Vec<Box<dyn ProgramLoader>>) {
+    pub fn load_programs(
+        &mut self,
+        programs_loader: Vec<Box<dyn ProgramLoader>>,
+    ) -> Result<(), SVMClientError> {
         for program in programs_loader {
-            self.svm.add_program(program.pubkey(), &program.data());
+            self.svm.add_program(program.pubkey(), &program.data())?;
         }
+        Ok(())
     }
     /// Advances the timestamp reported by the [`Clock`] sysvar
     ///
